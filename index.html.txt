@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Для тебя 💕</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 450px;
+      min-height: 100vh;
+      background: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      display: none;
+      flex-direction: column;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* Страница 1 */
+    .page-1 {
+      background: #FFB6C1;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .love-pattern {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .love-pattern span {
+      position: absolute;
+      color: rgba(180, 60, 80, 0.25);
+      font-size: 20px;
+      font-weight: 300;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .content-1 {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title-1 {
+      font-size: 26px;
+      font-weight: 300;
+      color: white;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .photo-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .main-photo {
+      width: 240px;
+      height: 300px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      border: 3px solid white;
+      background: #ddd;
+    }
+
+    .main-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bubble {
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%) rotate(3deg);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      backdrop-filter: blur(4px);
+      white-space: nowrap;
+    }
+
+    .bubble p {
+      color: #e85d7a;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .btn-white {
+      margin-top: 30px;
+      background: white;
+      padding: 16px 40px;
+      border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border: none;
+      font-size: 18px;
+      font-weight: 500;
+      color: #e85d7a;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: fit-content;
+    }
+
+    .btn-white:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Страница 2 */
+    .page-2 {
+      background: #FF6B6B;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .static-hearts {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .static-hearts span {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.15);
+      font-size: 30px;
+      user-select: none;
+    }
+
+    .cat-corner {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      border: 2px solid white;
+      z-index: 5;
+      background: #ddd;
+    }
+
+    .cat-corner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cat-tl { top: 20px; left: 20px; }
+    .cat-tr { top: 20px; right: 20px; }
+    .cat-bl { bottom: 120px; left: 20px; }
+    .cat-br { bottom: 120px; right: 20px; }
+
+    .content-2 {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .question {
+      font-size: 64px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 40px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .btn-yes, .btn-no {
+      padding: 14px 40px;
+      border-radius: 40px;
+      border: none;
+      font-size: 28px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-yes {
+      background: white;
+      color: #FF6B6B;
+    }
+
+    .btn-no {
+      background: rgba(255,255,255,0.8);
+      color: #666;
+    }
+
+    .btn-yes:active, .btn-no:active {
+      transform: scale(0.95);
+    }
+
+    .message-popup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.15);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .popup-card {
+      background: white;
+      padding: 24px 28px;
+      border-radius: 24px;
+      max-width: 300px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .popup-card p {
+      font-size: 18px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 32px;
+      height: 32px;
+      background: #ff4444;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      border: 2px solid white;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .next-link {
+      position: absolute;
+      bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: white;
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      z-index: 20;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Страница 3 */
+    .page-3 {
+      background: #e5e5e5;
+      align-items: center;
+      padding: 20px 0 40px;
+      overflow-y: auto;
+    }
+
+    .video-container {
+      width: 90%;
+      max-width: 380px;
+      margin: 10px auto 0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: black;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .telegram-message {
+      background: white;
+      width: 90%;
+      max-width: 380px;
+      margin: 16px auto;
+      padding: 14px 16px;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: relative;
+      user-select: none;
+    }
+
+    .message-text {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #111;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .message-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      font-size: 12px;
+      color: #8e8e93;
+    }
+
+    .double-tap-hint {
+      font-size: 11px;
+      color: #aaa;
+      text-align: right;
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    .heart-reaction {
+      position: absolute;
+      bottom: -10px;
+      right: 10px;
+      background: white;
+      border-radius: 50%;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid #e5e5e5;
+    }
+
+    .back-btn-3 {
+      margin: 10px 0 20px 20px;
+      align-self: flex-start;
+      background: rgba(255,255,255,0.9);
+      padding: 8px 18px;
+      border-radius: 30px;
+      color: #333;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Анимации */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!-- Страница 1 -->
+  <div class="page page-1 active" id="page1">
+    <div class="love-pattern" id="lovePattern"></div>
+    <div class="content-1">
+      <h1 class="title-1">ты самое лучшее<br>что случалось со мной</h1>
+      <div class="photo-wrapper">
+        <div class="main-photo">
+          <img src="photo.jpg" alt="Мы вместе">
+        </div>
+        <div class="bubble">
+          <p>я таю от твоей улыбки</p>
+        </div>
+      </div>
+      <button class="btn-white" id="toPage2">нажми на меня</button>
+    </div>
+  </div>
+
+  <!-- Страница 2 -->
+  <div class="page page-2" id="page2">
+    <div class="static-hearts" id="staticHearts"></div>
+    <div class="cat-corner cat-tl"><img src="cat1.jpg" alt="Кот"></div>
+    <div class="cat-corner cat-tr"><img src="cat2.jpg" alt="Кот"></div>
+    <div class="cat-corner cat-bl"><img src="cat3.jpg" alt="Кот"></div>
+    <div class="cat-corner cat-br"><img src="cat4.jpg" alt="Кот"></div>
+    <div class="content-2">
+      <div class="question">мы?</div>
+      <div class="btn-group">
+        <button class="btn-yes" id="btnYes">да</button>
+        <button class="btn-no" id="btnNo">нет</button>
+      </div>
+    </div>
+    <div class="message-popup hidden" id="yesPopup">
+      <div class="popup-card">
+        <p>ну конечно мы, ты самый милый и красивый кот из всех остальных</p>
+      </div>
+    </div>
+    <div class="message-popup hidden" id="noPopup">
+      <div class="popup-card">
+        <div class="close-btn" id="closeNoPopup">✕</div>
+        <div style="font-size: 48px; margin-bottom: 12px;">😭</div>
+        <p>подумай еще раз</p>
+      </div>
+    </div>
+    <div class="next-link hidden" id="nextLink">
+      <span>дальше</span>
+      <span>→</span>
+    </div>
+    <audio id="bgMusic" preload="auto" loop>
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- Страница 3 -->
+  <div class="page page-3" id="page3">
+    <button class="back-btn-3" id="backToPage2From3">← Назад</button>
+    <div class="video-container">
+      <video id="loveVideo" playsinline webkit-playsinline>
+        <source src="video.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="telegram-message" id="telegramMessage">
+      <div class="message-text">
+        мой любимый мальчик, я редко такое говорю, пишу, и как обычно делаю это ночью. на момент сейчас 4 утра. вобщем, я очень люблю тебя, ты ваще ваще самый классный, безумно ценю тебя. когда тебе грустно или плохо мне тоже, и наоборот. я всегда радуюсь когда ты мне пишешь, даже если немного. очень хочу чтобы наши отношения были такими крепкими, что огого🤯обожаю когда ты меня обнимаешь или как то прикасаешься ко мне. бывает иногда делаю глупости, прости за это😞но ты единственный к которому я испытываю такие большие чувства и когда мы ссоримся мне даже на физическом плане становится плохо. мне очень нравится когда ты мне снишься, особенно если мы долго не видимся, это спасает. вобщем я надеюсь что у нас все будет хорошо и вот короче у меня перестает работать думалка.
+      </div>
+      <div class="message-meta">
+        <span>4:14 AM</span>
+        <span style="margin-left: 3px;">✓✓</span>
+      </div>
+      <div class="double-tap-hint">❤️ дважды нажми</div>
+      <div class="heart-reaction hidden" id="heartReaction">❤️</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Элементы
+    var page1 = document.getElementById('page1');
+    var page2 = document.getElementById('page2');
+    var page3 = document.getElementById('page3');
+    var toPage2Btn = document.getElementById('toPage2');
+    var btnYes = document.getElementById('btnYes');
+    var btnNo = document.getElementById('btnNo');
+    var yesPopup = document.getElementById('yesPopup');
+    var noPopup = document.getElementById('noPopup');
+    var closeNoPopup = document.getElementById('closeNoPopup');
+    var nextLink = document.getElementById('nextLink');
+    var backToPage2From3 = document.getElementById('backToPage2From3');
+    var bgMusic = document.getElementById('bgMusic');
+    var loveVideo = document.getElementById('loveVideo');
+    var telegramMessage = document.getElementById('telegramMessage');
+    var heartReaction = document.getElementById('heartReaction');
+
+    // Фон "love you"
+    var lovePattern = document.getElementById('lovePattern');
+    for (var i = 0; i < 30; i++) {
+      var span = document.createElement('span');
+      span.textContent = 'love you';
+      span.style.left = (i % 6) * 20 + '%';
+      span.style.top = Math.floor(i / 6) * 25 + '%';
+      span.style.fontSize = (20 + Math.random() * 20) + 'px';
+      span.style.transform = 'rotate(' + (-15 + Math.random() * 30) + 'deg)';
+      lovePattern.appendChild(span);
+    }
+
+    // Статичные сердечки
+    var staticHearts = document.getElementById('staticHearts');
+    for (var i = 0; i < 25; i++) {
+      var span = document.createElement('span');
+      span.textContent = '❤️';
+      span.style.left = Math.random() * 100 + '%';
+      span.style.top = Math.random() * 100 + '%';
+      span.style.fontSize = (25 + Math.random() * 30) + 'px';
+      staticHearts.appendChild(span);
+    }
+
+    // Переходы
+    toPage2Btn.addEventListener('click', function() {
+      page1.classList.remove('active');
+      page2.classList.add('active');
+    });
+
+    // Логика страницы 2
+    btnYes.addEventListener('click', function() {
+      yesPopup.classList.remove('hidden');
+      nextLink.classList.remove('hidden');
+      if (bgMusic) {
+        bgMusic.play().catch(function() {});
+      }
+    });
+
+    btnNo.addEventListener('click', function() {
+      noPopup.classList.remove('hidden');
+    });
+
+    closeNoPopup.addEventListener('click', function() {
+      noPopup.classList.add('hidden');
+    });
+
+    yesPopup.addEventListener('click', function(e) {
+      if (e.target === yesPopup) yesPopup.classList.add('hidden');
+    });
+
+    noPopup.addEventListener('click', function(e) {
+      if (e.target === noPopup) noPopup.classList.add('hidden');
+    });
+
+    nextLink.addEventListener('click', function() {
+      page2.classList.remove('active');
+      page3.classList.add('active');
+      if (loveVideo) {
+        loveVideo.play().catch(function() {});
+      }
+      if (bgMusic) {
+        bgMusic.pause();
+      }
+    });
+
+    // Страница 3
+    backToPage2From3.addEventListener('click', function() {
+      page3.classList.remove('active');
+      page2.classList.add('active');
+      if (loveVideo) loveVideo.pause();
+    });
+
+    // Двойное нажатие
+    var tapCount = 0;
+    var tapTimer = null;
+    telegramMessage.addEventListener('click', function() {
+      if (!heartReaction.classList.contains('hidden')) return;
+      tapCount++;
+      if (tapCount === 1) {
+        tapTimer = setTimeout(function() {
+          tapCount = 0;
+        }, 300);
+      } else if (tapCount === 2) {
+        clearTimeout(tapTimer);
+        tapCount = 0;
+        heartReaction.classList.remove('hidden');
+      }
+    });
+
+  })();
+</script>
+</body>
+</html>
